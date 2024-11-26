@@ -14,3 +14,4 @@ Need to add search form.
 
 Need to add register user. 
   - Registeration form added, login form added. Just need to style properly.
+  - Show user that they've registered successfully.
