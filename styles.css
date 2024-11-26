@@ -1,0 +1,416 @@
+/*
+    Name: Ron Navalez
+    Date: November 16, 2024
+*/
+
+main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+form {
+    background-color: black;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    color: white;
+    text-align: center;
+}
+
+form div {
+    margin-bottom: 15px;
+}
+
+form label {
+    display: block;
+    font-weight: bold;
+    margin: 0px auto;
+    padding: 10px;
+}
+
+form input[type="text"],
+form input[type="tel"],
+form textarea {
+    width: 50%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 18px;
+}
+
+form button {
+    display: inline-block;
+    width: 20%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color .3s;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: red; /* Set error message color to red */
+    display: none;
+    margin-top: 5px;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+
+/* Gallery item styles */
+#gallery{
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(2, 1fr); /* before and after effect */
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 2);
+    transition: transform 0.3s ease-in-out;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+
+/* Image styles */
+.gallery-item img {
+    display: flex;
+    width: 600px;
+    height: 440px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.gallery-item:hover img {
+    transform: scale(1);
+}
+
+/* Caption styles */
+.gallery-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, .6);
+    color: #fff;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.gallery-item:hover .gallery-caption {
+    opacity: 1;
+}
+
+/* Reset default browser styles */
+* {
+    padding: 0;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+/* Global styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: black; /* Set a light background color */
+    color: white; /* Set default text color */
+    line-height: 1.6; /* Set line height for better readability */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Header styles */
+header {
+    background-color: #333;
+    color: white;
+    padding: 20px 0; /* Add vertical padding */
+    text-align: center; /* Center-align the content in the header */
+}
+
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    transition: color 0.3s; /* Add smooth transition for link color */
+}
+
+nav ul li a:hover {
+    color: #ffc107; /* Change link color on hover */
+}
+
+
+section {
+    margin-bottom: 40px; /* Add more space between sections */
+}
+
+/* Section title styles */
+section h2 {
+    font-size: 2.5em; /* Increase font size */
+    margin-bottom: 20px; /* Add space below the title */
+    font-weight: bold;
+}
+
+section h3{
+    font-style: italic;
+    color: #ffc107;
+    font-size: 2em;
+}
+
+/* Button styles */
+.btn {
+    display: inline-block;
+    padding: 10px 20px; /* Add padding to buttons */
+    background-color: gray;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s; /* Add smooth transition for button background */
+}
+
+.btn:hover {
+    background-color: #ffc107; /* Change button background color on hover */
+}
+
+/* Footer styles */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Footer navigation */
+footer nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+footer nav ul li a {
+    color: #666; /* Subtle color */
+    font-size: 1em;
+}
+
+footer nav ul li a:hover {
+    color: #ffc107; 
+}
+
+footer p {
+    font-size: 0.8em;
+}
+
+/* Social Icons Styles */
+.social-icons a {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.social-icons img{
+    width: 30px;
+    height: auto;
+}
+
+/* Service styles */
+#services {
+    text-align: center;
+}
+
+.service img {
+    width:500px; 
+    margin-left: 20px;
+}
+
+h4 {
+    margin: 0px auto;
+    padding: 10px;
+    font-size: 40px;
+    font-family: cursive;
+    text-align: center;
+}
+
+h1 {
+    text-align: center;
+}
+
+header img {
+    width: 800px; 
+    height: auto; 
+    margin: 10px; 
+}
+
+form#review-form input,
+form#review-form textarea {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+/* All Reviews Section */
+#all-reviews {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #222;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Title for All Reviews */
+#all-reviews h2 {
+    font-size: 2.5em;
+    color: #ffc107; 
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Review List Container */
+.review-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Individual Review */
+.review {
+    padding: 20px;
+    background-color: #333; 
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Hover effect for individual reviews */
+.review:hover {
+    transform: scale(1.01);
+}
+
+/* Review Title */
+.review h3 {
+    font-size: 1.8em;
+    color: #ffc107;
+    margin-bottom: 10px;
+}
+
+/* Review Rating */
+.review p strong {
+    color: #ffc107;  
+}
+
+.review p {
+    font-size: 1.2em;
+    color: white;  
+}
+
+/* Review Date */
+.review em {
+    font-size: 1em;
+    color: #bbb; 
+}
+
+
+
+
+@media only screen and (max-width: 768px) {
+    /* Adjustments for screens up to 768px wide */
+    main {
+        max-width: 90%; /* Decrease the maximum width of the main container */
+        padding: 10px; /* Reduce padding */
+    }
+
+    form input[type="text"],
+    form input[type="tel"],
+    form textarea {
+        width: 90%; /* Decrease the width of form inputs */
+    }
+
+    form button {
+        width: 70%; /* Decrease the width of form buttons */
+    }
+
+    section h2 {
+        font-size: 2em; /* Decrease the font size of section titles */
+    }
+
+    section h3 {
+        font-size: 1.5em; /* Decrease the font size of subsection titles */
+    }
+
+    .btn {
+        padding: 8px 16px; /* Decrease button padding */
+    }
+
+    .gallery-item img {
+        width: 100%; /* Set the width to 100% of the container */
+        height: auto; /* Automatically adjust the height to maintain aspect ratio */
+        margin: 0; /* Remove any margins */
+    }
+
+    .service img {
+        width: 100%; /* Set the width to 100% of the container */
+        height: auto; /* Automatically adjust the height to maintain aspect ratio */
+        margin: 0 auto; /* Center-align the images */
+    }
+
+    header img{
+        width: 100%; /* Decrease padding for the header */
+        height: auto;
+        margin: 0 auto;
+    }
+
+        #all-reviews {
+            padding: 15px;
+        }
+    
+        .review {
+            padding: 15px;
+        }
+    
+        #all-reviews h2 {
+            font-size: 2em;
+        }
+    
+        .review h3 {
+            font-size: 1.5em;
+        }
+    
+        .review p {
+            font-size: 1em;
+        }
+    }
+    
