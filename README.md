@@ -9,5 +9,8 @@ Main focus of this project is the reviews section. Depends on what else is neede
 
 November 25, 2024 - Re-reading requirements for the assignment.
 CRUD for logged in users and admin were done then realized that the admin part is only being done through backend.
+
 Need to add search form.
-Need to add register user.
+
+Need to add register user. 
+  - Registeration form added, login form added. Just need to style properly.
