@@ -1,3 +1,8 @@
+<!--
+    Name: Ron Navalez
+    Date: November 16, 2024
+-->
+
 <?php
 session_start();
 require_once 'connect.php';
