@@ -1,39 +1,70 @@
-<!--
-    Name: Ron Navalez
-    Date: November 16, 2024
--->
-
-
 <?php
+session_start();
+require_once 'connect.php';
 
-require 'connect.php';  // Include the database connection
-require 'authenticate.php';
+$role = $_SESSION['role'] ?? 'guest'; // Defaults to 'guest' if not logged in
+$user_id = $_SESSION['user_id'] ?? null;
 
-// If the form is submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve and sanitize the data from the form
-    $title = htmlspecialchars($_POST['title']);
+// Handle Create (Add Review)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'create') {
+    if ($role === 'admin' || $role === 'user') {
+        $title = $_POST['title'];
+        $review = $_POST['review'];
+        $image_url = null;
 
-    $review = htmlspecialchars($_POST['review']);
+        // Handle image upload
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $image_name = basename($_FILES['image']['name']);
+            $target_path = "uploads/" . $image_name;
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_path)) {
+                $image_url = $image_name;
+            }
+        }
 
-    // Prepare and execute the query to insert the review into the database
-    $stmt = $db->prepare("INSERT INTO reviews (title, review) VALUES (:title, :review)");
-    $stmt->bindParam(':title', $title);
-    $stmt->bindParam(':review', $review);
-
-    if ($stmt->execute()) {
-        echo '<script>alert("Review submitted successfully!")</script>';
+        $stmt = $db->prepare("INSERT INTO reviews (title, review, image_url, user_id) VALUES (:title, :review, :image_url, :user_id)");
+        $stmt->execute([':title' => $title, ':review' => $review, ':image_url' => $image_url, ':user_id' => $user_id]);
+        header("Location: reviews.php");
+        exit();
     }
 }
 
-// Retrieve existing reviews from the database to display them
-$stmt = $db->query("SELECT * FROM reviews ORDER BY created_at DESC");
-$reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+// Handle Update (Edit Review)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'update') {
+    if (($role === 'admin') || ($role === 'user' && $_POST['user_id'] == $user_id)) {
+        $review_id = $_POST['review_id'];
+        $title = $_POST['title'];
+        $review = $_POST['review'];
+        $image_url = $_POST['current_image'];
 
-// display uploaded photos
-$sql = "SELECT title, review, image_path, created_at FROM reviews ORDER BY created_at DESC";
-$stmt = $db->query($sql);
-$reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // Handle image upload
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $image_name = basename($_FILES['image']['name']);
+            $target_path = "uploads/" . $image_name;
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $target_path)) {
+                $image_url = $image_name; // Overwrite old image
+            }
+        }
+
+        $stmt = $db->prepare("UPDATE reviews SET title = :title, review = :review, image_url = :image_url WHERE id = :review_id");
+        $stmt->execute([':title' => $title, ':review' => $review, ':image_url' => $image_url, ':review_id' => $review_id]);
+        header("Location: reviews.php");
+        exit();
+    }
+}
+
+// Handle Delete
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'delete') {
+    if ($role === 'admin' || ($role === 'user' && $_POST['user_id'] == $user_id)) {
+        $review_id = $_POST['review_id'];
+        $stmt = $db->prepare("DELETE FROM reviews WHERE id = :review_id");
+        $stmt->execute([':review_id' => $review_id]);
+        header("Location: reviews.php");
+        exit();
+    }
+}
+
+// Fetch All Reviews (Read)
+$reviews = $db->query("SELECT * FROM reviews ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -41,74 +72,57 @@ $reviews = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reviews</title>
     <link rel="stylesheet" href="styles.css">
-    <title>Reviews - Tri Builders Corp</title>
 </head>
 <body>
-        <header>
-            <a href="index.php"><img src="images/tbcheader.jpg" alt="Tri Builders Corp Logo"></a>
-            <nav>
-                <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="gallery.php">Gallery</a></li>
-                    <li><a href="services.php">Services</a></li>
-                    <li><a href="about.php">About Us</a></li>
-                    <li><a href="contact.php">Contact</a></li>
-                    <li><a href="reviews.php">Reviews</a></li>
-                </ul>
-            </nav>
-        </header>
+    <h1>Reviews</h1>
+    <div class="all-reviews">
+        <?php foreach ($reviews as $review): ?>
+            <div class="review">
+                <h3><?php echo htmlspecialchars($review['title']); ?></h3>
+                <p><?php echo htmlspecialchars($review['review']); ?></p>
+                <?php if (!empty($review['image_url'])): ?>
+                    <img src="uploads/<?php echo htmlspecialchars($review['image_url']); ?>" alt="Review Image" width="200">
+                <?php endif; ?>
+                <p>By User ID: <?php echo htmlspecialchars($review['user_id']); ?></p>
 
-<h1>Submit Your Review</h1>
+                <?php if ($role === 'admin' || ($role === 'user' && $review['user_id'] == $user_id)): ?>
+                    <form action="reviews.php" method="POST" style="display:inline;">
+                        <input type="hidden" name="review_id" value="<?php echo $review['id']; ?>">
+                        <input type="hidden" name="user_id" value="<?php echo $review['user_id']; ?>">
+                        <input type="hidden" name="action" value="delete">
+                        <button type="submit">Delete</button>
+                    </form>
+                    <form action="reviews.php" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="review_id" value="<?php echo $review['id']; ?>">
+                        <input type="hidden" name="user_id" value="<?php echo $review['user_id']; ?>">
+                        <input type="hidden" name="action" value="update">
+                        <input type="text" name="title" value="<?php echo htmlspecialchars($review['title']); ?>" required>
+                        <textarea name="review" required><?php echo htmlspecialchars($review['review']); ?></textarea>
+                        <input type="hidden" name="current_image" value="<?php echo htmlspecialchars($review['image_url']); ?>">
+                        <input type="file" name="image">
+                        <button type="submit">Update</button>
+                    </form>
+                <?php endif; ?>
+            </div>
+        <?php endforeach; ?>
+    </div>
 
-<form action="submit_review.php" method="POST" enctype="multipart/form-data">
-    <label for="title">Review Title:</label>
-    <input type="text" id="title" name="title" required>
-
-    <label for="review">Your Review:</label>
-    <textarea id="review" name="review" required></textarea>
-
-    <label for="image">Upload an Image:</label>
-    <input type="file" id="image" name="image" accept="image/*">
-
-    <button type="submit">Submit Review</button>
-</form>
-
-
-
-<h2>All Reviews</h2>
-<div class="reviews">
-    <?php foreach ($reviews as $review): ?>
-        <div class="review">
-            <h3><?= htmlspecialchars($review['title']) ?></h3>
-            <p><?= nl2br(htmlspecialchars($review['review'])) ?></p>
-            <?php if (!empty($review['image_path'])): ?>
-                <img src="<?= htmlspecialchars($review['image_path']) ?>" alt="Review Image" style="max-width: 300px;">
-            <?php endif; ?>
-            <small><br>Posted on: <?= htmlspecialchars($review['created_at']) ?></small>
-        </div>
-        <hr>
-    <?php endforeach; ?>
-</div>
-<footer>
-        <nav>
-            <ul>
-                <li><a href="index.php">Home</a></li>
-                <li><a href="gallery.php">Gallery</a></li>
-                <li><a href="services.php">Services</a></li>
-                <li><a href="about.php">About Us</a></li>
-                <li><a href="contact.php">Contact</a></li>
-                <li><a href="reviews.php">Reviews</a></li>
-            </ul>
-        </nav>
-        <div class="social-icons">
-            <a href="https://www.facebook.com/TriBuildersCorp/"><img src="images/facebook-icon.png" alt="Facebook"></a>
-            <a href="https://www.instagram.com/tribuilderscorp/"><img src="images/instagram-icon.png" alt="Instagram"></a>
-        </div>
-
-        <p>&copy; 2024 Tri Builders Corp. All rights reserved.</p>
-    </footer>
+    <?php if ($role === 'admin' || $role === 'user'): ?>
+        <h2>Leave a Review</h2>
+        <form action="reviews.php" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="action" value="create">
+            <label for="title">Review Title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="review">Your Review:</label>
+            <textarea id="review" name="review" required></textarea>
+            <label for="image">Upload Image:</label>
+            <input type="file" id="image" name="image">
+            <button type="submit">Submit Review</button>
+        </form>
+    <?php else: ?>
+        <p>You must log in to leave a review.</p>
+    <?php endif; ?>
 </body>
 </html>
-
-
