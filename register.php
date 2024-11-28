@@ -86,6 +86,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="login-register">
             <a href="login.php">Login</a> | <a href="register.php">Register</a>
         </div>
+        <form action="search.php" method="GET" style="display: inline;
+                                                      padding: 0px">
+            <input type="text" name="query" placeholder="Search links here.." required style="padding: 5px; width: 300px;">
+            <button type="submit" style="padding: 9px;
+                                         width: 70px;
+                                         background-color: #ffc107;
+                                         color: gray;">Search</button>
+        </form>
     </header>
     <?php
     // Display error messages if there are any
@@ -104,14 +112,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br>
 
         <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required value="<?= htmlspecialchars($email ?? '') ?>">
+        <input style="width: 50%; 
+                padding: 12px; 
+                border: none;
+                font-size: 16px;"
+                type="email" name="email" id="email" required value="<?= htmlspecialchars($email ?? '') ?>">
         <br>
 
         <label for="password">Password:</label>
         <input type="password" name="password" id="password" required>
         <br>
 
-        <button type="submit">Register</button>
+        <button  type="submit">Register</button>
     </form>
     <footer>
         <nav>
