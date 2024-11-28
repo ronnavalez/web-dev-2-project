@@ -15,3 +15,9 @@ Need to add search form.
 Need to add register user. 
   - Registeration form added, login form added. Just need to style properly.
   - Show user that they've registered successfully.
+
+Nov 27. 2024
+Almost 90% done, just need to figure out how to deploy this website.
+All edits and coding were done using VS Code
+
+Finally added the search bar that searches links through pages.
