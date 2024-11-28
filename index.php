@@ -1,3 +1,8 @@
+<!-- 
+    November 16, 2024
+    Ron Navalez
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +24,18 @@
                 <li><a href="reviews.php">Reviews</a></li>
             </ul>
         </nav>
+        <div class="login-register">
+            <a href="login.php">Login</a> | <a href="register.php">Register</a>
+        </div>
+        <form action="search.php" method="GET" style="display: inline;
+                                                      padding: 0px">
+            <input type="text" name="query" placeholder="Search links here.." required style="padding: 5px; width: 300px;">
+            <button type="submit" style="padding: 9px;
+                                         width: 70px;
+                                         background-color: #ffc107;
+                                         color: gray;">Search</button>
+        </form>
+
     </header>
 
     <main>
