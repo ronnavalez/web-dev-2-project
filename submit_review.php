@@ -1,3 +1,8 @@
+<!-- 
+    November 16, 2024
+    Ron Navalez
+-->
+
 <?php
 require 'connect.php';
 
@@ -7,7 +12,7 @@ include 'authenticate.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $review = $_POST['review'];
-    $imagePath = null; // Default in case no image is uploaded
+    $imagePath = null; // Default jsut in case no image is uploaded
 
     // Handle the file upload
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
