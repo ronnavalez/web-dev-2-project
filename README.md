@@ -21,3 +21,6 @@ Almost 90% done, just need to figure out how to deploy this website.
 All edits and coding were done using VS Code
 
 Finally added the search bar that searches links through pages.
+
+Nov 28, 2024
+Final touches today, needed to deploy CMS to a free domain hosting site.
