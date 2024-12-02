@@ -1,7 +1,7 @@
 <?php
-     define('DB_DSN','mysql:host=localhost;dbname=tbc;charset=utf8');
-     define('DB_USER','serveruser');
-     define('DB_PASS','gorgonzola7!');     
+     define('DB_DSN','mysql:host=sql301.infinityfree.com;dbname=if0_37810847_webdev2project;charset=utf8');
+     define('DB_USER','if0_37810847');
+     define('DB_PASS','UgND3UwWEL');     
      
      try {
          // Try creating new PDO connection to MySQL.
